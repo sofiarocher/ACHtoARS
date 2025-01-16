@@ -85,7 +85,7 @@ export default function Calculator({
 
         <div className="space-y-2">
           <label className="text-sm font-medium">
-            Envía desde
+            Enviá desde
           </label>
           <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
             <SelectTrigger>
@@ -105,7 +105,7 @@ export default function Calculator({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Recibe en</label>
+          <label className="text-sm font-medium">Recibí en</label>
           <Select value={selectedBank} onValueChange={setSelectedBank}>
             <SelectTrigger>
               <SelectValue placeholder="Seleccionar banco" />
