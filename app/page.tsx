@@ -4,14 +4,9 @@ import { useMemo, useState } from 'react';
 import Calculator from './components/calculator';
 import Fintechs from './components/fintechs';
 import Branch from './components/branch';
+import { useFintechsUsa } from './hooks/useFintechsUsa';
 
-// Mock data
-const paymentPlatforms = [
-  { id: 'deel', name: 'Deel', commission: 0.015, rate: 1200, logo: 'https://cdn.worldvectorlogo.com/logos/deel-1.svg' },
-  { id: 'paypal', name: 'PayPal', commission: 0.054, rate: 1220, logo: 'https://w7.pngwing.com/pngs/665/281/png-transparent-logo-computer-icons-paypal-paypal-blue-angle-rectangle-thumbnail.png' },
-  { id: 'payoneer', name: 'Payoneer', commission: 0.02, rate: 1230, logo: 'https://companieslogo.com/img/orig/PAYO-cef43840.png?t=1720244493' },
-];
-
+// Solo mantenemos los bancos argentinos como mock data
 const argentineBanks = [
   { id: 'lemoncash', name: 'Lemon Cash', commission: 0.001, logo: 'https://comparte-entity-photos.s3.us-east-2.amazonaws.com/876b31af-c8ca-4d15-91a3-743e09e5cb85.png' },
   { id: 'belo', name: 'Belo', commission: 0.0015, logo: 'https://assets.belo.app/media/iso-favicom-belo/color/png/app-icon.png' },
@@ -24,17 +19,18 @@ export default function Home() {
   const [amount, setAmount] = useState<string>('1000');
   const [selectedPlatform, setSelectedPlatform] = useState<string>('wise');
   const [selectedBank, setSelectedBank] = useState<string>('galicia');
+  const { fintechs } = useFintechsUsa();
 
   const calculation = useMemo(() => {
-    const platform = paymentPlatforms.find(p => p.id === selectedPlatform);
+    const platform = fintechs.find(p => p.uuid === selectedPlatform);
     const bank = argentineBanks.find(b => b.id === selectedBank);
     
     if (!platform || !bank || !amount) return null;
     
     const amountUSD = Number(amount);
-    const platformCommissionAmount = amountUSD * platform.commission;
+    const platformCommissionAmount = amountUSD * (platform.total_commission / 100);
     const amountAfterPlatformCommission = amountUSD - platformCommissionAmount;
-    const amountInARS = amountAfterPlatformCommission * platform.rate;
+    const amountInARS = amountAfterPlatformCommission * 1200;
     const bankCommissionAmount = amountInARS * bank.commission;
     const finalAmount = amountInARS - bankCommissionAmount;
     
@@ -45,10 +41,14 @@ export default function Home() {
       amountInARS,
       bankCommissionAmount,
       finalAmount,
-      platform,
+      platform: {
+        name: platform.name,
+        commission: platform.total_commission / 100,
+        rate: 1200
+      },
       bank
     };
-  }, [amount, selectedPlatform, selectedBank]);
+  }, [amount, selectedPlatform, selectedBank, fintechs]);
 
   const formatCurrency = (value: number, currency: string) => {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency }).format(value);
@@ -71,7 +71,13 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-8">
               <Calculator
-                paymentPlatforms={paymentPlatforms}
+                paymentPlatforms={fintechs.map(f => ({
+                  id: f.uuid,
+                  name: f.name,
+                  commission: f.total_commission / 100,
+                  rate: 1200,
+                  logo: f.logo
+                }))}
                 argentineBanks={argentineBanks}
                 amount={amount}
                 setAmount={setAmount}
@@ -89,7 +95,13 @@ export default function Home() {
                 argentineBanks={argentineBanks}
                 calculation={calculation}
                 formatCurrency={formatCurrency}
-                paymentPlatforms={paymentPlatforms}
+                paymentPlatforms={fintechs.map(f => ({
+                  id: f.uuid,
+                  name: f.name,
+                  commission: f.total_commission / 100,
+                  rate: 1200,
+                  logo: f.logo
+                }))}
                 amount={Number(amount)}
               />
             </div> 

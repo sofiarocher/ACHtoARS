@@ -38,7 +38,7 @@ export default function Fintechs({ paymentPlatforms, argentineBanks, calculation
         <TableHeader>
           <TableRow>
             <TableHead>Fintech</TableHead>
-            <TableHead>Comisión</TableHead>
+            <TableHead>Comisión Total</TableHead>
             <TableHead>Monto Final</TableHead>
           </TableRow>
         </TableHeader>
