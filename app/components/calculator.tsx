@@ -84,9 +84,7 @@ export default function Calculator({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">
-            Enviá desde
-          </label>
+          <label className="text-sm font-medium">Enviá desde</label>
           <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
             <SelectTrigger>
               <SelectValue placeholder="Seleccionar plataforma" />
@@ -95,7 +93,12 @@ export default function Calculator({
               {paymentPlatforms.map((platform) => (
                 <SelectItem key={platform.id} value={platform.id}>
                   <div className="flex items-center gap-2">
-                    <Image src={platform.logo} alt={platform.name} width={16} height={16} />
+                    <Image
+                      src={platform.logo}
+                      alt={platform.name}
+                      width={16}
+                      height={16}
+                    />
                     {platform.name}
                   </div>
                 </SelectItem>
@@ -114,7 +117,12 @@ export default function Calculator({
               {argentineBanks.map((bank) => (
                 <SelectItem key={bank.id} value={bank.id}>
                   <div className="flex items-center gap-2">
-                    <Image src={bank.logo} alt={bank.name} width={16} height={16} />
+                    <Image
+                      src={bank.logo}
+                      alt={bank.name}
+                      width={16}
+                      height={16}
+                    />
                     {bank.name}
                   </div>
                 </SelectItem>
@@ -122,7 +130,7 @@ export default function Calculator({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex items-center justify-between">
+        <div className={`flex items-center justify-between`}>
           <div>
             <p className="text-sm font-medium opacity-80">Recibirás</p>
             <h2 className="text-3xl font-bold mt-1">
@@ -133,7 +141,7 @@ export default function Calculator({
           </div>
           <CalculatorIcon className="h-8 w-8 opacity-80 text-orange-600" />
         </div>
-        {calculation && (
+        {calculation ? (
           <div className="text-sm space-y-2">
             <p>
               Monto original: {formatCurrency(calculation.amountUSD, "USD")}
@@ -152,6 +160,14 @@ export default function Calculator({
               {formatCurrency(calculation.bankCommissionAmount, "ARS")} (
               {(calculation.bank.commission * 100).toFixed(2)}%)
             </p>
+          </div>
+        ) : (
+          <div className="text-sm space-y-2 text-muted-foreground">
+            <p>Monto original: USD 0</p>
+            <p>Comisión: -</p>
+            <p>Tasa de cambio: -</p>
+            <p>Monto en ARS: ARS 0</p>
+            <p>Comisión: -</p>
           </div>
         )}
       </div>

@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import Calculator from './components/calculator';
 import Fintechs from './components/fintechs';
+import Branch from './components/branch';
 
 // Mock data
 const paymentPlatforms = [
@@ -56,6 +57,7 @@ export default function Home() {
   return (
     <div className="min-h-screen relative bg-white">
       <div className="relative z-10 min-h-screen">
+        <Branch />
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="flex flex-col items-center mb-12">
             <h1 className="text-6xl font-sans font-black text-primary mb-4">
@@ -95,6 +97,9 @@ export default function Home() {
         </div>
       <footer className="text-center text-gray-500 text-sm py-4">
         Made with ❤️ by <a href="https://www.x.com/srocher_dev" target="_blank" className="text-primary underline">Sofía Rocher.</a>
+        <p className="text-gray-500 text-xs mt-2">
+          Las comisiones son aproximadas y pueden variar según la empresa. <br /> Gracias a <a href="https://www.criptoya.com/" target="_blank" className="text-primary underline">Criptoya</a> por los datos del cambio ARS/USD en tiempo real.
+        </p>
       </footer>
       </div>
     </div>
