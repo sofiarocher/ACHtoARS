@@ -18,15 +18,13 @@ jobs:
         echo "🔄 Actualizando Lemoncash..."
         
         # Obtener el precio de Lemoncash
-        RATE=$(curl -s https://criptoya.com/api/exchanges | jq '.lemoncash.bid')
+        RESPONSE=$(curl -s 'https://criptoya.com/api/lemoncash/USDC/ARS/1')
+        RATE=$(echo $RESPONSE | jq '.bid')
         echo "💰 Precio obtenido: $RATE"
         
         # Actualizar en Supabase
-        RESPONSE=$(curl -X PATCH "${SUPABASE_URL}/rest/v1/fintechs_arg?uuid=eq.lemoncash" \
-          -H "apikey: ${SUPABASE_KEY}" \
-          -H "Authorization: Bearer ${SUPABASE_KEY}" \
+        curl -X PATCH "${SUPABASE_URL}/rest/v1/fintechs_arg?uuid=eq.lemoncash" \
+          -H "apikey: ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}" \
           -H "Content-Type: application/json" \
-          -d "{\"rate\":${RATE}}" \
-          -w "\nStatus: %{http_code}")
-        
-        echo "📝 Respuesta: $RESPONSE"
+          -d "{\"rate\":${RATE}}"
