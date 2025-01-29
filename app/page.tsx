@@ -5,33 +5,26 @@ import Calculator from './components/calculator';
 import Fintechs from './components/fintechs';
 import Branch from './components/branch';
 import { useFintechsUsa } from './hooks/useFintechsUsa';
-
-// Solo mantenemos los bancos argentinos como mock data
-const argentineBanks = [
-  { id: 'lemoncash', name: 'Lemon Cash', commission: 0.001, logo: 'https://comparte-entity-photos.s3.us-east-2.amazonaws.com/876b31af-c8ca-4d15-91a3-743e09e5cb85.png' },
-  { id: 'belo', name: 'Belo', commission: 0.0015, logo: 'https://assets.belo.app/media/iso-favicom-belo/color/png/app-icon.png' },
-  { id: 'cocoscrypto', name: 'Cocos Crypto', commission: 0.002, logo: 'https://r2.criptoya.com/logos/Cocos%20Crypto.png' },
-  { id: 'takenos', name: 'Takenos', commission: 0.002, logo: 'https://play-lh.googleusercontent.com/Eao2w3R_rv5hozY4mmYlLXWENwUca2LQmOjBk1n0ueertC-Y2RpK3mUp37DAN0pd3r8=w240-h480-rw' },
-  { id: 'astropay', name: 'Astropay', commission: 0.002, logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvYAL9Y1XHUhFGt0oPNDj_H0EP27xBtknh1g&s' },
-];
+import { useFintechsArg } from './hooks/useFintechsArg';
 
 export default function Home() {
   const [amount, setAmount] = useState<string>('1000');
   const [selectedPlatform, setSelectedPlatform] = useState<string>('wise');
   const [selectedBank, setSelectedBank] = useState<string>('galicia');
   const { fintechs } = useFintechsUsa();
+  const { fintechsArg } = useFintechsArg();
 
   const calculation = useMemo(() => {
     const platform = fintechs.find(p => p.uuid === selectedPlatform);
-    const bank = argentineBanks.find(b => b.id === selectedBank);
+    const bank = fintechsArg.find(b => b.uuid === selectedBank);
     
     if (!platform || !bank || !amount) return null;
     
     const amountUSD = Number(amount);
     const platformCommissionAmount = amountUSD * (platform.total_commission / 100);
     const amountAfterPlatformCommission = amountUSD - platformCommissionAmount;
-    const amountInARS = amountAfterPlatformCommission * 1200;
-    const bankCommissionAmount = amountInARS * bank.commission;
+    const amountInARS = amountAfterPlatformCommission * bank.rate;
+    const bankCommissionAmount = amountInARS * (bank.commission / 100);
     const finalAmount = amountInARS - bankCommissionAmount;
     
     return {
@@ -44,11 +37,11 @@ export default function Home() {
       platform: {
         name: platform.name,
         commission: platform.total_commission / 100,
-        rate: 1200
+        rate: bank.rate
       },
       bank
     };
-  }, [amount, selectedPlatform, selectedBank, fintechs]);
+  }, [amount, selectedPlatform, selectedBank, fintechs, fintechsArg]);
 
   const formatCurrency = (value: number, currency: string) => {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency }).format(value);
@@ -72,13 +65,13 @@ export default function Home() {
             <div className="space-y-8">
               <Calculator
                 paymentPlatforms={fintechs.map(f => ({
-                  id: f.uuid,
+                  uuid: f.uuid,
                   name: f.name,
                   commission: f.total_commission / 100,
                   rate: 1200,
                   logo: f.logo
                 }))}
-                argentineBanks={argentineBanks}
+                argentineBanks={fintechsArg}
                 amount={amount}
                 setAmount={setAmount}
                 selectedPlatform={selectedPlatform}
@@ -92,14 +85,14 @@ export default function Home() {
 
             <div className="space-y-8">
               <Fintechs
-                argentineBanks={argentineBanks}
+                argentineBanks={fintechsArg}
                 calculation={calculation}
                 formatCurrency={formatCurrency}
                 paymentPlatforms={fintechs.map(f => ({
-                  id: f.uuid,
+                  uuid: f.uuid,
                   name: f.name,
                   commission: f.total_commission / 100,
-                  rate: 1200,
+                  rate: f.rate,
                   logo: f.logo
                 }))}
                 amount={Number(amount)}

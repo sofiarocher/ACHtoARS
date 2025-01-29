@@ -12,7 +12,7 @@ export default async function Fintechs() {
     
     // Consulta con más detalles
     const { data, error, status, statusText } = await supabase
-      .from('fintechs_usa')
+      .from('fintechs_arg')
       .select('*')
       .throwOnError();
     
@@ -24,7 +24,7 @@ export default async function Fintechs() {
 
     return (
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Fintechs USA</h1>
+        <h1 className="text-2xl font-bold mb-4">Fintechs Argentina</h1>
         <div className="bg-white shadow-md rounded p-4">
           {data && data.length > 0 ? (
             <ul className="space-y-2">

@@ -11,26 +11,37 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 
-interface Bank {
-  id: string;
+interface Fintech {
+  uuid: string;
   name: string;
   commission: number;
   logo: string;
+  rate: number;
 }
 
 interface Calculation {
   amountInARS: number;
+  platform: {
+    name: string;
+    commission: number;
+    rate: number;
+  };
+  bank: {
+    name: string;
+    commission: number;
+  };
 }
 
 interface VirtualBanksProps {
-  paymentPlatforms: Bank[];
-  argentineBanks: Bank[];
+  paymentPlatforms: Fintech[];
+  argentineBanks: Fintech[];
   calculation: Calculation | null;
   formatCurrency: (value: number, currency: string) => string;
   amount: number;
 }
 
 export default function Fintechs({ paymentPlatforms, argentineBanks, calculation, formatCurrency, amount }: VirtualBanksProps) {
+
   return (
     <Card className="p-6 text-primary">
       <h3 className="text-xl font-semibold mb-4 ">Comparativa</h3>
@@ -52,7 +63,7 @@ export default function Fintechs({ paymentPlatforms, argentineBanks, calculation
             } : null;
 
             return (
-              <TableRow key={platform.id}>
+              <TableRow key={platform.uuid}>
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Image src={platform.logo} alt={platform.name} width={16} height={16} />
@@ -72,19 +83,19 @@ export default function Fintechs({ paymentPlatforms, argentineBanks, calculation
             const bankCalculation = calculation ? {
               ...calculation,
               bank: bank,
-              bankCommissionAmount: calculation.amountInARS * bank.commission,
-              finalAmount: calculation.amountInARS * (1 - bank.commission)
+              amountInARS: amount * (1 - calculation.platform.commission) * bank.rate,
+              finalAmount: amount * (1 - calculation.platform.commission) * bank.rate * (1 - bank.commission / 100)
             } : null;
 
             return (
-              <TableRow key={bank.id}>
+              <TableRow key={bank.uuid}>
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Image src={bank.logo} alt={bank.name} width={16} height={16} />
                     {bank.name}
                   </div>
                 </TableCell>
-                <TableCell>{(bank.commission * 100).toFixed(2)}%</TableCell>
+                <TableCell>{bank.commission.toFixed(2)}%</TableCell>
                 <TableCell>
                   {bankCalculation
                     ? formatCurrency(bankCalculation.finalAmount, 'ARS')

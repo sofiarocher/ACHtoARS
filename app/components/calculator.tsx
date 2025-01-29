@@ -14,14 +14,14 @@ import Image from "next/image";
 
 interface CalculatorProps {
   paymentPlatforms: Array<{
-    id: string;
+    uuid: string;
     name: string;
     commission: number;
     rate: number;
     logo: string;
   }>;
   argentineBanks: Array<{
-    id: string;
+    uuid: string;
     name: string;
     commission: number;
     logo: string;
@@ -91,7 +91,7 @@ export default function Calculator({
             </SelectTrigger>
             <SelectContent>
               {paymentPlatforms.map((platform) => (
-                <SelectItem key={platform.id} value={platform.id}>
+                <SelectItem key={platform.uuid} value={platform.uuid}>
                   <div className="flex items-center gap-2">
                     <Image
                       src={platform.logo}
@@ -115,7 +115,7 @@ export default function Calculator({
             </SelectTrigger>
             <SelectContent>
               {argentineBanks.map((bank) => (
-                <SelectItem key={bank.id} value={bank.id}>
+                <SelectItem key={bank.uuid} value={bank.uuid}>
                   <div className="flex items-center gap-2">
                     <Image
                       src={bank.logo}
@@ -142,7 +142,7 @@ export default function Calculator({
           <CalculatorIcon className="h-8 w-8 opacity-80 text-orange-600" />
         </div>
         {calculation ? (
-          <div className="text-sm space-y-2">
+          <div className="text-sm space-y-2 opacity-75">
             <p>
               Monto original: {formatCurrency(calculation.amountUSD, "USD")}
             </p>
@@ -151,18 +151,18 @@ export default function Calculator({
               {formatCurrency(calculation.platformCommissionAmount, "USD")} (
               {(calculation.platform.commission * 100).toFixed(2)}%)
             </p>
-            <p>Tasa de cambio: {calculation.platform.rate} ARS/USD</p>
+            <p>Tasa de cambio: ${(calculation.platform.rate).toFixed(2)} ARS/USDC</p>
             <p>
               Monto en ARS: {formatCurrency(calculation.amountInARS, "ARS")}
             </p>
             <p>
               Comisión {calculation.bank.name}:{" "}
               {formatCurrency(calculation.bankCommissionAmount, "ARS")} (
-              {(calculation.bank.commission * 100).toFixed(2)}%)
+              {(calculation.bank.commission).toFixed(2)}%)
             </p>
           </div>
         ) : (
-          <div className="text-sm space-y-2 text-muted-foreground">
+          <div className="text-sm space-y-2 text-muted-foreground opacity-75">
             <p>Monto original: USD 0</p>
             <p>Comisión: -</p>
             <p>Tasa de cambio: -</p>

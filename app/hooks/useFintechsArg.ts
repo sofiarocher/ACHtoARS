@@ -7,19 +7,19 @@ interface Fintech {
   logo: string;
   receipt_commission: number;
   send_commission: number;
-  total_commission: number;
+  commission: number;
   rate: number;
 }
 
-interface UseFintechsUsaReturn {
-  fintechs: Fintech[];
+interface UseFintechsArgReturn {
+  fintechsArg: Fintech[];
   isLoading: boolean;
   error: Error | null;
   refetch: () => Promise<void>;
 }
 
-export function useFintechsUsa(): UseFintechsUsaReturn {
-  const [fintechs, setFintechs] = useState<Fintech[]>([]);
+export function useFintechsArg(): UseFintechsArgReturn {
+  const [fintechsArg, setFintechsArg] = useState<Fintech[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -34,14 +34,14 @@ export function useFintechsUsa(): UseFintechsUsaReturn {
       setError(null);
 
       const { data, error: supabaseError } = await supabase
-        .from('fintechs_usa')
+            .from('fintechs_arg')
         .select('*');
 
       if (supabaseError) {
         throw new Error(supabaseError.message);
       }
 
-      setFintechs(data || []);
+      setFintechsArg(data || []);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Error desconocido'));
     } finally {
@@ -54,7 +54,7 @@ export function useFintechsUsa(): UseFintechsUsaReturn {
   }, []);
 
   return {
-    fintechs,
+    fintechsArg,
     isLoading,
     error,
     refetch: fetchFintechs
