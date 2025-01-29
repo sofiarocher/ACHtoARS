@@ -35,3 +35,14 @@ jobs:
           update_fintech "lemoncash"
           update_fintech "belo"
           update_fintech "cocoscrypto"
+          
+          # Actualizar timestamp del último update
+          CURRENT_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          curl -X PATCH "${SUPABASE_URL}/rest/v1/last_update?id=eq.1" \
+            -H "apikey: ${SUPABASE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "{\"timestamp\":\"${CURRENT_TIMESTAMP}\"}"
+          
+          echo "✅ Timestamp actualizado: ${CURRENT_TIMESTAMP}"
