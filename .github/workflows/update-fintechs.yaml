@@ -24,24 +24,23 @@ jobs:
         # Filtra solo los exchanges que te interesan
         echo $response | jq '{ 
           exchanges: [
-            { name: "lemoncash", rate: .lemoncash.bid },
-            { name: "belo", rate: .belo.bid },
-            { name: "cocoscrypto", rate: .cocoscrypto.bid },
-            { name: "takenos", rate: .takenos.bid },
-            { name: "astropay", rate: .astropay.bid }
+            { uuid: "lemoncash", rate: .lemoncash.bid },
+            { uuid: "belo", rate: .belo.bid },
+            { uuid: "cocoscrypto", rate: .cocoscrypto.bid },
+            { uuid: "takenos", rate: .takenos.bid },
+            { uuid: "astropay", rate: .astropay.bid }
           ]
         }' > fintechs.json
 
         # Itera sobre los exchanges y actualiza la tabla en Supabase
         for row in $(jq -c '.exchanges[]' fintechs.json); do
-          NAME=$(echo "$row" | jq -r '.name')
+          UUID=$(echo "$row" | jq -r '.uuid')
           RATE=$(echo "$row" | jq -r '.rate')
 
           # Inserta o actualiza los datos en la tabla fintechs_arg
-          curl -X POST "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/fintechs_arg" \
+          curl -X PATCH "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/fintechs_arg" \
             -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Content-Type: application/json" \
-            -H "Prefer: resolution=merge-duplicates" \
-            -d "{\"name\":\"${NAME}\",\"rate\":${RATE}}"
+            -d "{\"rate\":${RATE}}"
         done
