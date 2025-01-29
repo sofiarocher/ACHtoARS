@@ -53,7 +53,7 @@ export default function Home() {
         <LastUpdated />
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="flex flex-col items-center mb-12">
-            <h1 className="text-6xl font-sans font-black text-primary mb-4">
+            <h1 className="text-6xl text-primary mb-4 font-[var(--font-limelight)]">
               ACH to ARS
             </h1>
             <p className="text-gray-900 text-lg text-center">

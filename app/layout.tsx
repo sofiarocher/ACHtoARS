@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Limelight } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,8 +13,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const limelight = Limelight({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-limelight',
+});
+
 export const metadata: Metadata = {
-  title: "ACH to ARS",
+  title: "ACH to ARS | Calculadora",
   description: "Decidir la mejor manera de transferir tus dólares a pesos.",
 };
 
@@ -25,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${limelight.variable} antialiased`}
       >
         {children}
       </body>
