@@ -3,9 +3,9 @@
 import { useMemo, useState } from 'react';
 import Calculator from './components/calculator';
 import Fintechs from './components/fintechs';
-import Branch from './components/branch';
-import { useFintechsUsa } from './hooks/useFintechsUsa';
 import { useFintechsArg } from './hooks/useFintechsArg';
+import { useFintechsUsa } from './hooks/useFintechsUsa';
+import LastUpdated from './components/lastUpdated';
 
 export default function Home() {
   const [amount, setAmount] = useState<string>('1000');
@@ -50,7 +50,7 @@ export default function Home() {
   return (
     <div className="min-h-screen relative bg-white">
       <div className="relative z-10 min-h-screen">
-        <Branch />
+        <LastUpdated />
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="flex flex-col items-center mb-12">
             <h1 className="text-6xl font-sans font-black text-primary mb-4">
