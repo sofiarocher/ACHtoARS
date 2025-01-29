@@ -103,7 +103,7 @@ export default function Home() {
       <footer className="text-center text-gray-500 text-sm py-4">
         Made with ❤️ by <a href="https://www.x.com/srocher_dev" target="_blank" className="text-primary underline">Sofía Rocher.</a>
         <p className="text-gray-500 text-xs mt-2">
-          Las comisiones son aproximadas y pueden variar según la empresa. <br /> Gracias a <a href="https://www.criptoya.com/" target="_blank" className="text-primary underline">Criptoya</a> por los datos del cambio ARS/USD en tiempo real.
+          Las comisiones son aproximadas y pueden variar según la empresa. <br /> Gracias a <a href="https://www.criptoya.com/" target="_blank" className="text-primary underline">Criptoya</a> por los datos del cambio ARS/USDC en tiempo real.
         </p>
       </footer>
       </div>
