@@ -10,21 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Update Lemoncash Rate
-      env:
-        SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-        SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}
+    - name: Update Fintech Rates
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}
       run: |
-        echo "🔄 Actualizando Lemoncash..."
-        
-        # Obtener el precio de Lemoncash
-        RESPONSE=$(curl -s 'https://criptoya.com/api/lemoncash/USDC/ARS/1')
-        RATE=$(echo $RESPONSE | jq '.bid')
-        echo "💰 Precio obtenido: $RATE"
-        
-        # Actualizar en Supabase
-        curl -X PATCH "${SUPABASE_URL}/rest/v1/fintechs_arg?uuid=eq.lemoncash" \
-          -H "apikey: ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}" \
-          -H "Content-Type: application/json" \
-          -d "{\"rate\":${RATE}}"
+        # Función para actualizar una fintech
+        update_fintech() {
+          local name=$1
+          echo "🔄 Actualizando $name..."
+          
+          RESPONSE=$(curl -s "https://criptoya.com/api/$name/USDC/ARS/1")
+          RATE=$(echo $RESPONSE | jq '.totalBid')
+          echo "💰 Precio $name: $RATE"
+          
+          curl -X PATCH "${SUPABASE_URL}/rest/v1/fintechs_arg?uuid=eq.$name" \
+            -H "apikey: ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"rate\":${RATE}}"
+        }
+
+        # Actualizar cada fintech
+        update_fintech "lemoncash"
+        update_fintech "belo"
+        update_fintech "cocoscrypto"
+        update_fintech "takenos"
+        update_fintech "astropay"
