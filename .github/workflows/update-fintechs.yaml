@@ -38,7 +38,7 @@ jobs:
           RATE=$(echo "$row" | jq -r '.rate')
 
           # Inserta o actualiza los datos en la tabla fintechs_arg
-          curl -X PATCH "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/fintechs_arg" \
+          curl -X PATCH "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/fintechs_arg?uuid=eq.${UUID}" \
             -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Content-Type: application/json" \
