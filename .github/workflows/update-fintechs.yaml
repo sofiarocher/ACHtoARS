@@ -15,7 +15,7 @@ jobs:
 
     - name: Update fintechs_arg Table in Supabase
       env:
-        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       run: |
         # Obtener los datos de la API CriptoYa
@@ -24,24 +24,24 @@ jobs:
         # Filtra solo los exchanges que te interesan
         echo $response | jq '{ 
           exchanges: [
-            { name: "lemoncash", bid: .lemoncash.bid },
-            { name: "belo", bid: .belo.bid },
-            { name: "cocoscrypto", bid: .cocoscrypto.bid },
-            { name: "takenos", bid: .takenos.bid },
-            { name: "astropay", bid: .astropay.bid }
+            { name: "lemoncash", rate: .lemoncash.bid },
+            { name: "belo", rate: .belo.bid },
+            { name: "cocoscrypto", rate: .cocoscrypto.bid },
+            { name: "takenos", rate: .takenos.bid },
+            { name: "astropay", rate: .astropay.bid }
           ]
         }' > fintechs.json
 
         # Itera sobre los exchanges y actualiza la tabla en Supabase
         for row in $(jq -c '.exchanges[]' fintechs.json); do
           NAME=$(echo "$row" | jq -r '.name')
-          BID=$(echo "$row" | jq -r '.bid')
+          RATE=$(echo "$row" | jq -r '.rate')
 
           # Inserta o actualiza los datos en la tabla fintechs_arg
-          curl -X POST "${SUPABASE_URL}/rest/v1/fintechs_arg" \
+          curl -X POST "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/fintechs_arg" \
             -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Content-Type: application/json" \
             -H "Prefer: resolution=merge-duplicates" \
-            -d "{\"name\":\"${NAME}\",\"bid\":${BID}}"
+            -d "{\"name\":\"${NAME}\",\"rate\":${RATE}}"
         done
