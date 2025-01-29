@@ -35,5 +35,3 @@ jobs:
           update_fintech "lemoncash"
           update_fintech "belo"
           update_fintech "cocoscrypto"
-          update_fintech "takenos"
-          update_fintech "astropay"
