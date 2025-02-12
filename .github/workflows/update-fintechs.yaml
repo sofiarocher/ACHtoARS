@@ -36,6 +36,7 @@ jobs:
           update_fintech "lemoncash"
           update_fintech "belo"
           update_fintech "cocoscrypto"
+          update_fintech "binance"
           
           # Actualizar timestamp del último update
           CURRENT_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
