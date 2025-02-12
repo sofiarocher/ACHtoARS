@@ -19,8 +19,8 @@ export default function Calculator({
   formatCurrency,
 }: CalculatorProps) {
   return (
-    <Card className="p-6 bg-white text-primary font-sans">
-      <div className="space-y-6">
+    <Card className="p-4 sm:p-6 font-sans h-full">
+      <div className="space-y-4 sm:space-y-6 h-full max-w-md mx-auto">
         <InputAmount amount={amount} setAmount={setAmount} />
         <SelectFintech
           value={selectedUsa}

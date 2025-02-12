@@ -5,7 +5,7 @@ export const ExternalLink = ({ href, text }: { href: string; text: ReactNode }) 
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-primary underline"
+      className="text-gray"
     >
       {text}
     </a>

@@ -19,25 +19,25 @@ export const SelectFintech = ({
     isLoading?: boolean;
     flagIcon: string;
   }) => (
-    <div className="space-y-2">
-      <label className="text-sm font-medium">{label}</label>
+    <div className="space-y-1.5 sm:space-y-2">
+      <label className="text-xs sm:text-sm font-medium text-gray">{label}</label>
       {isLoading ? (
-        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-9 sm:h-10 w-full" />
       ) : (
         <Select value={value} onValueChange={onChange}>
-          <SelectTrigger>
+          <SelectTrigger className="h-9 sm:h-10 text-sm sm:text-base">
             <SelectValue placeholder={
-              <div className="flex items-center gap-2">
-                <Image src={flagIcon} alt={placeholder} width={16} height={16} />
+              <div className="flex items-center gap-2 text-gray font-extralight">
+                <Image src={flagIcon} alt={placeholder} width={14} height={14} className="sm:w-4 sm:h-4" />
                 {placeholder}
               </div>
             } />
           </SelectTrigger>
           <SelectContent>
             {options.map((option) => (
-              <SelectItem key={option.uuid} value={option.uuid}>
-                <div className="flex items-center gap-2">
-                  <Image src={option.logo} alt={option.name} width={16} height={16} />
+              <SelectItem key={option.uuid} value={option.uuid} className="text-sm sm:text-base">
+                <div className="flex items-center gap-2 text-gray font-extralight">
+                  <Image src={option.logo} alt={option.name} width={14} height={14} className="sm:w-4 sm:h-4" />
                   {option.name}
                 </div>
               </SelectItem>

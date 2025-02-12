@@ -14,25 +14,25 @@ export const CalculationSummary = ({
     <>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium opacity-80">Recibirás</p>
+          <p className="text-sm font-medium opacity-80 text-gray">Recibirás</p>
           {isLoading ? (
-            <Skeleton className="h-10 w-32 mt-1" />
+            <Skeleton className="h-8 sm:h-10 w-28 sm:w-32 mt-1" />
           ) : (
-            <h2 className="text-3xl font-bold mt-1">
+            <h2 className="text-2xl sm:text-3xl font-medium mt-1 text-gray">
               {calculation ? formatCurrency(calculation.finalAmount, "ARS") : "ARS 0"}
             </h2>
           )}
         </div>
-        <CalculatorIcon className="h-8 w-8 opacity-80 text-orange-600" />
+        <CalculatorIcon className="h-6 w-6 sm:h-8 sm:w-8 opacity-80 text-gray" />
       </div>
       {isLoading ? (
-        <div className="space-y-2 mt-4">
+        <div className="space-y-1.5 sm:space-y-2 mt-3 sm:mt-4">
           {[...Array(5)].map((_, i) => (
-            <Skeleton key={i} className="h-5 w-full" />
+            <Skeleton key={i} className="h-4 sm:h-5 w-full" />
           ))}
         </div>
       ) : calculation ? (
-        <div className="text-sm space-y-2 opacity-75">
+        <div className="text-xs sm:text-sm space-y-1.5 sm:space-y-2 mt-3 sm:mt-4 opacity-75 text-gray font-extralight">
           <p>Monto original: {formatCurrency(calculation.amountUSD, "USD")}</p>
           <p>
             Comisión {calculation.platform.name}: {formatCurrency(calculation.platformCommissionAmount, "USD")} (
@@ -46,7 +46,7 @@ export const CalculationSummary = ({
           </p>
         </div>
       ) : (
-        <div className="text-sm space-y-2 text-muted-foreground opacity-75">
+        <div className="text-xs sm:text-sm space-y-1.5 sm:space-y-2 mt-3 sm:mt-4 text-gray opacity-75">
           <p>Monto original: USD 0</p>
           <p>Comisión: -</p>
           <p>Tasa de cambio: -</p>
