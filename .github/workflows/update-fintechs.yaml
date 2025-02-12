@@ -2,7 +2,8 @@ name: Update fintechs_arg Table
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # every 5 min
+    - cron: '0 */1 * * 1-5'  # Cada hora de lunes a viernes
+    - cron: '0 */12 * * 0,6' # Cada 12 horas los sábados y domingos
   workflow_dispatch:
 
 jobs:
