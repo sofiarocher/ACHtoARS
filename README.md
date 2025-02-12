@@ -3,8 +3,6 @@
 ## Overview
 ACH to ARS Calculator is a web application that helps users calculate and compare the best ways to transfer USD to ARS (Argentine Pesos) through different fintech platforms. It provides real-time rates and commission calculations to help users make informed decisions about their money transfers.
 
-![ACH to ARS Calculator](public/background.png)
-
 ## 🚀 Features
 - **Real-time Calculations**: Instantly calculate how much ARS you'll receive for your USD transfers
 - **Multiple Platform Comparison**: Compare different US and Argentine fintech platforms
