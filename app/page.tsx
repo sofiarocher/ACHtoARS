@@ -1,46 +1,51 @@
-'use client';
+"use client";
 
-import Calculator from '@/components/features/calculator/calculator';
-import { calculateTransfer } from '@/utils/calculate-transfer';
-import { formatCurrency } from '@/utils/format-currency';
-import { MappedPlatform } from '@/utils/types';
-import { useMemo, useState } from 'react';
-import Fintechs from '../components/features/fintechs';
-import Footer from '../components/layouts/footer';
-import LastUpdated from '../components/layouts/last-updated';
-import { useArgFintechs } from './hooks/use-fintechs-arg';
-import { useUsaFintechs } from './hooks/use-fintechs-usa';
+import Calculator from "@/components/features/calculator/calculator";
+import { calculateTransfer } from "@/utils/calculate-transfer";
+import { formatCurrency } from "@/utils/format-currency";
+import { MappedPlatform } from "@/utils/types";
+import { useMemo, useState } from "react";
+import Fintechs from "../components/features/fintechs";
+import Footer from "../components/layouts/footer";
+import LastUpdated from "../components/layouts/last-updated";
+import { useArgFintechs } from "./hooks/use-fintechs-arg";
+import { useUsaFintechs } from "./hooks/use-fintechs-usa";
+import Branch from "@/components/layouts/branch";
 
 export default function Home() {
-  const [amount, setAmount] = useState<string>('1000');
-  const [selectedUsa, setSelectedUsa] = useState<string>('');
-  const [selectedArg, setSelectedArg] = useState<string>('');
+  const [amount, setAmount] = useState<string>("1000");
+  const [selectedUsa, setSelectedUsa] = useState<string>("");
+  const [selectedArg, setSelectedArg] = useState<string>("");
   const { fintechs, isLoading: isLoadingUsa } = useUsaFintechs();
   const { fintechsArg, isLoading: isLoadingArg } = useArgFintechs();
 
   const calculation = useMemo(() => {
-    const platform = fintechs.find(p => p.uuid === selectedUsa);
-    const bank = fintechsArg.find(b => b.uuid === selectedArg);
-    
+    const platform = fintechs.find((p) => p.uuid === selectedUsa);
+    const bank = fintechsArg.find((b) => b.uuid === selectedArg);
+
     if (!platform || !bank || !amount) return null;
-    
+
     return calculateTransfer({
       amount: Number(amount),
       platform,
-      bank
+      bank,
     });
   }, [amount, selectedUsa, selectedArg, fintechs, fintechsArg]);
-  
 
-
-  const mappedPlatforms = useMemo(() => 
-    fintechs.map(f => ({
-      uuid: f.uuid,
-      name: f.name,
-      commission: f.total_commission / 100,
-      rate: 1200,
-      logo: f.logo
-    } as MappedPlatform)), [fintechs]);
+  const mappedPlatforms = useMemo(
+    () =>
+      fintechs.map(
+        (f) =>
+          ({
+            uuid: f.uuid,
+            name: f.name,
+            commission: f.total_commission / 100,
+            rate: 1200,
+            logo: f.logo,
+          } as MappedPlatform)
+      ),
+    [fintechs]
+  );
 
   const isLoading = isLoadingUsa || isLoadingArg;
 
@@ -48,8 +53,9 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-[url('/background.png')] bg-cover bg-center bg-no-repeat">
       <main className="flex-1">
         <div className="relative z-10">
-          <LastUpdated />
           <div className="max-w-6xl mx-auto px-4 py-12">
+            <LastUpdated />
+            <Branch />
             <div className="flex flex-col items-center mb-12">
               <div className="relative">
                 <h1 className="absolute -right-0.5 sm:-right-1 -bottom-1 text-center sm:text-6xl text-4xl font-extralight text-green select-none">
@@ -60,7 +66,9 @@ export default function Home() {
                 </h2>
               </div>
               <p className="text-gray sm:text-sm text-xs font-light sm:font-normal text-center mt-8 sm:w-1/2">
-              Dejá de perder tiempo comparando. Calculá en segundos cuánto recibirás en ARS por tus pagos en USD vía ACH y elegí la opción más conveniente.
+                Dejá de perder tiempo comparando. Calculá en segundos cuánto
+                recibirás en ARS por tus pagos en USD vía ACH y elegí la opción
+                más conveniente.
               </p>
             </div>
 
@@ -90,8 +98,8 @@ export default function Home() {
                   amount={Number(amount)}
                   isLoading={isLoading}
                 />
-              </div> 
-            </div> 
+              </div>
+            </div>
           </div>
         </div>
       </main>
@@ -99,4 +107,3 @@ export default function Home() {
     </div>
   );
 }
-
